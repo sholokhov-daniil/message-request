@@ -36,7 +36,7 @@ class SelectedDayCallback
         Telegram::editMessageText([
             'chat_id' => $query->message->chat->id,
             'message_id' => $query->message->messageId,
-            'text' => 'Выберите время приема на ' . $date->isoFormat('D MMMM YYYY'),
+            'text' => '🕝 Выберите время приема на ' . $date->isoFormat('D MMMM YYYY'),
             'reply_markup' => json_encode($component),
         ]);
     }

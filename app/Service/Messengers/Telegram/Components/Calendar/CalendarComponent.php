@@ -71,12 +71,19 @@ class CalendarComponent implements ComponentInterface
             ]
         );
 
+        $keyboard->row([$prev, $next]);
+
         $month = Keyboard::inlineButton([
-            'text' => $date->monthName . ' ' . $date->year,
+            'text' => $date->isoFormat('MMMM'),
             'callback_data' => 'noop'
         ]);
 
-        $keyboard->row([$prev, $month, $next]);
+        $year = Keyboard::inlineButton([
+            'text' => $date->year,
+            'callback_data' => 'noop'
+        ]);
+
+        $keyboard->row([$month, $year]);
 
         $daysHeader = [];
         $dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
