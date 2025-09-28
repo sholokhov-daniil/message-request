@@ -22,18 +22,19 @@ Route::get('/telegram-reg', function() {
     dd($response);
 });
 
-//Route::get('/telegram-commands', function() {
-//    Telegram::deleteMyCommands();
-//
-//    $res = Telegram::setMyCommands([
-//        'commands' => [
-//            ['command' => 'start', 'description' => 'Начало работы с ботом'],
-//            ['command' => 'book_request', 'description' => 'Записаться']
-//        ],
-//    ]);
-//
-//    return response()->json(['success' => $res]);
-//});
+Route::get('/telegram-commands', function() {
+    Telegram::deleteMyCommands();
+
+    $res = Telegram::setMyCommands([
+        'commands' => [
+            ['command' => 'start', 'description' => '🚀 Начало работы с ботом'],
+            ['command' => 'book_request', 'description' => '📅 Записаться на услугу'],
+            ['command' => 'my_request', 'description' => '📋 Мои записи'],
+        ],
+    ]);
+
+    return response()->json(['success' => $res]);
+});
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

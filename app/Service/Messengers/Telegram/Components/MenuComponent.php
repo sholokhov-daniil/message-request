@@ -3,7 +3,6 @@
 namespace App\Service\Messengers\Telegram\Components;
 
 use App\Components\ComponentInterface;
-use App\Service\Messengers\Telegram\Facade\TelegramMessenger;
 use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\BotCommand;

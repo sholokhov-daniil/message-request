@@ -13,12 +13,12 @@ class BookRequestCommand extends Command
 
     public function handle(): void
     {
-        $component = TelegramMessenger::components()->buildCalendar();
         $data = ['now' => Carbon::now()];
+        $component = TelegramMessenger::components()->buildCalendar($data);
 
         $this->replyWithMessage([
             'text' => 'Выберите дату для записи на услугу:',
-            'reply_markup' => json_encode($component?->build($data))
+            'reply_markup' => json_encode($component)
         ]);
     }
 }

@@ -1,14 +1,19 @@
 <?php
 
+use App\Service\Messengers\Telegram\CallbackQuery;
 use App\Service\Messengers\Telegram\Components;
-use App\Service\Messengers\Telegram\Commands\CallbackQueryCommand;
 use Telegram\Bot\Commands\HelpCommand;
 
 return [
     'cidr' => 'https://core.telegram.org/resources/cidr.txt',
     'components' => [
-        'calendar' => Components\CalendarComponent::class,
+        'calendar' => Components\Calendar\CalendarComponent::class,
         'menu' => Components\MenuComponent::class,
+        'request_time' => Components\Calendar\RequestTime::class,
+    ],
+    'callback' => [
+        'calendar_request_day' => CallbackQuery\Calendar\Request\SelectedDayCallback::class,
+        'calendar_request_time' => CallbackQuery\Calendar\Request\SelectedTimeCallback::class,
     ],
     'error_message' => '⚠️ Произошла техническая ошибка. Мы уже работаем над её устранением.',
 

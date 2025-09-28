@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Service\Messengers\Telegram\Components;
+namespace App\Service\Messengers\Telegram\Components\Calendar;
 
 use App\Components\ComponentInterface;
+use App\Service\Messengers\Telegram\DTO\Callback;
 use Carbon\Carbon;
-
 use Telegram\Bot\Keyboard\Keyboard;
 
 class CalendarComponent implements ComponentInterface
@@ -109,9 +109,16 @@ class CalendarComponent implements ComponentInterface
                 $text = " ";
             }
 
+            $callbackData = [
+                'year' => $date->year,
+                'month' => $date->month,
+                'day' => $day,
+            ];
+
             $row[] = [
                 'text' => $text,
-                'callback_data' => "pick:{$date->year}:{$date->month}:{$day}"
+                'callback_data' => (string)(new Callback('calendar_request_day', $callbackData))
+//                'callback_data' => (string)(new Callback('calendar_request_day', $callbackData))
             ];
 
             if (count($row) === 7) {

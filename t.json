@@ -1,0 +1,8 @@
+{
+    "action": "calendar_day_select",
+    "data": {
+        "year": 2025,
+        "moth": 12,
+        "day": 3
+    }
+}

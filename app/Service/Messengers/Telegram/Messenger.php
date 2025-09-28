@@ -56,8 +56,7 @@ class Messenger implements MessengerInterface
      */
     public function isCallbackQuery(): bool
     {
-        $update = Telegram::getWebhookUpdate();
-        return $update->objectType() === 'callback_query';
+        return Telegram::getWebhookUpdate()->objectType() === 'callback_query';
     }
 
     /**
@@ -67,7 +66,7 @@ class Messenger implements MessengerInterface
      */
     public function isWebhook(): bool
     {
-        return !empty(Telegram::getWebhookInfo()->get('url'));
+        return Telegram::getWebhookUpdate()->objectType() === 'message';
     }
 
     /**
@@ -90,7 +89,7 @@ class Messenger implements MessengerInterface
 
     public function getComponent(string $name): ?ComponentInterface
     {
-        return $this->components()->build($name);
+        return $this->components()->get($name);
     }
 
     public function components(): ComponentManager

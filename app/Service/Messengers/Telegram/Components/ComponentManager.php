@@ -37,6 +37,11 @@ readonly class ComponentManager implements ContainerInterface
         return $this->build('calendar', $data);
     }
 
+    public function buildRequestTime(array $data): array
+    {
+        return $this->build('request_time', $data);
+    }
+
     public function buildMenu(): array
     {
         return $this->build('menu');
