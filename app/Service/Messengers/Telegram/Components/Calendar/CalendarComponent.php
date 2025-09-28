@@ -4,6 +4,7 @@ namespace App\Service\Messengers\Telegram\Components\Calendar;
 
 use App\Components\ComponentInterface;
 use App\Service\Messengers\Telegram\DTO\Callback;
+use App\Service\Messengers\Telegram\Facade\TelegramMessenger;
 use Carbon\Carbon;
 use Telegram\Bot\Keyboard\Keyboard;
 
@@ -39,18 +40,18 @@ class CalendarComponent implements ComponentInterface
     private function createHeader(Keyboard $keyboard, Carbon $date): void
     {
         $prevDate = $date->copy();
-        $prevDate->ceilMonth();
+        TelegramMessenger::getLogger()->debug([
+            'PREV' => $prevDate->toString(),
+            'NOW' => now()->toString()
+        ]);
 
-        if ($prevDate->timestamp> now()->timestamp) {
+        $prevDate->subMonth();
+
+        if ($prevDate->timestamp >= now()->timestamp) {
             $prev = Keyboard::inlineButton(
                 [
                     'text' => '◀️',
-                    'callback_data' => json_encode([
-                        'action' => 'calendar_nav',
-                        'type' => 'prev',
-                        'year' => $prevDate->year,
-                        'month' => $prevDate->month,
-                    ])
+                    'callback_data' => Callback::create('calendar_request', [$prevDate->year, $prevDate->month])
                 ]
             );
         } else {
@@ -62,12 +63,7 @@ class CalendarComponent implements ComponentInterface
         $next = Keyboard::inlineButton(
             [
                 'text' => '▶️',
-                'callback_data' => json_encode([
-                    'action' => 'calendar_nav',
-                    'type' => 'next',
-                    'year' => $nextDate->year,
-                    'month' => $nextDate->month,
-                ])
+                'callback_data' => Callback::create('calendar_request', [$nextDate->year, $nextDate->month])
             ]
         );
 

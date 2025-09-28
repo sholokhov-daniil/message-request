@@ -9,7 +9,7 @@ use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\CallbackQuery;
 
-class SelectedTimeCallback
+class AcceptedTimeCallback
 {
     public function __invoke(CallbackQuery $query, array $data = []): void
     {

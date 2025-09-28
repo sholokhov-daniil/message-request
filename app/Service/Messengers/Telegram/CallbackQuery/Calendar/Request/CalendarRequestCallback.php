@@ -11,10 +11,8 @@ class CalendarRequestCallback
 {
     public function __invoke(CallbackQuery $query, array $data = []): void
     {
-        TelegramMessenger::getLogger()->debug($data);
-
         $componentData = [
-            'now' => Carbon::createFromDate($data[0], $data[1], $data[2]),
+            'now' => Carbon::createFromDate($data[0], $data[1])->locale('ru'),
         ];
 
         $component = TelegramMessenger::components()->buildCalendar($componentData);

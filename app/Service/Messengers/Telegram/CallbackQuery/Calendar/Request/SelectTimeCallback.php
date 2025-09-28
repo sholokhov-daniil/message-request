@@ -7,13 +7,11 @@ use Carbon\Carbon;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\CallbackQuery;
 
-class SelectedDayCallback
+class SelectTimeCallback
 {
     public function __invoke(CallbackQuery $query, array $data = []): void
     {
         // TODO: Добавить логику поиска свободного время
-        TelegramMessenger::getLogger()->debug($data);
-
         $componentData = [
             'action' => 'calendar_request_time',
             'date' => $data,

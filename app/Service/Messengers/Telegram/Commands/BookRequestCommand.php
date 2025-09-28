@@ -3,7 +3,6 @@
 namespace App\Service\Messengers\Telegram\Commands;
 
 use App\Service\Messengers\Telegram\Facade\TelegramMessenger;
-use Carbon\Carbon;
 use Telegram\Bot\Commands\Command;
 
 class BookRequestCommand extends Command
@@ -13,7 +12,7 @@ class BookRequestCommand extends Command
 
     public function handle(): void
     {
-        $data = ['now' => Carbon::now()->locale('ru')];
+        $data = ['now' => now()->locale('ru')];
         $component = TelegramMessenger::components()->buildCalendar($data);
 
         $this->replyWithMessage([
