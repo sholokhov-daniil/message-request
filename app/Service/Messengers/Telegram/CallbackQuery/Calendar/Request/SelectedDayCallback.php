@@ -30,10 +30,13 @@ class SelectedDayCallback
 
         $component = TelegramMessenger::components()->buildRequestTime($componentData);
 
+        list($year, $month, $day) = $data;
+        $date = Carbon::createFromDate($year, $month, $day)->locale('ru');
+
         Telegram::editMessageText([
             'chat_id' => $query->message->chat->id,
             'message_id' => $query->message->messageId,
-            'text' => 'Выберите время приема',
+            'text' => 'Выберите время приема на ' . $date->isoFormat('D MMMM YYYY'),
             'reply_markup' => json_encode($component),
         ]);
     }

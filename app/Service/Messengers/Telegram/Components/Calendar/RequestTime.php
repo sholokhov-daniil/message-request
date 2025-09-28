@@ -31,7 +31,13 @@ class RequestTime implements ComponentInterface
         foreach ($times as $value) {
             $row[] = $keyboard::inlineButton([
                 'text' => $value,
-                'callback_data' => $action . '|' . $value,
+                'callback_data' => Callback::create(
+                    $action,
+                    [
+                        ...$data['date'],
+                        $value
+                    ]
+                ),
             ]);
 
             if (count($row) === 3) {
