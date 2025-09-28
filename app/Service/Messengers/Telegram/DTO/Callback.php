@@ -13,8 +13,13 @@ class Callback implements \Stringable
     {
     }
 
+    public static function create(string $action, array $data = []): string
+    {
+        return sprintf('%s|%s', $action, implode('|', $data));
+    }
+
     public function __toString(): string
     {
-        return sprintf('%s|%s', $this->action, implode('|', $this->data));
+        return self::create($this->action, $this->data);
     }
 }

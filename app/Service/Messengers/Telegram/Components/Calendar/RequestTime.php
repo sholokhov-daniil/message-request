@@ -3,6 +3,7 @@
 namespace App\Service\Messengers\Telegram\Components\Calendar;
 
 use App\Components\ComponentInterface;
+use App\Service\Messengers\Telegram\DTO\Callback;
 use Telegram\Bot\Keyboard\Keyboard;
 
 class RequestTime implements ComponentInterface
@@ -46,7 +47,7 @@ class RequestTime implements ComponentInterface
         $keyboard->row([
             $keyboard::inlineButton([
                 'text' => 'Назад',
-                'callback_data' => 'ignore'
+                'callback_data' => Callback::create('calendar_request', $data['date'])
             ])
         ]);
     }

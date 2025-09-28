@@ -7,33 +7,22 @@ use Carbon\Carbon;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\CallbackQuery;
 
-class SelectedDayCallback
+class CalendarRequestCallback
 {
     public function __invoke(CallbackQuery $query, array $data = []): void
     {
-        // TODO: Добавить логику поиска свободного время
         TelegramMessenger::getLogger()->debug($data);
 
         $componentData = [
-            'action' => 'calendar_request_time',
-            'date' => $data,
-            'items' => [
-                "13:00",
-                "14:00",
-                "15:00",
-                "18:00",
-                "22:00",
-                "3:00",
-            ]
+            'now' => Carbon::createFromDate($data[0], $data[1], $data[2]),
         ];
 
-
-        $component = TelegramMessenger::components()->buildRequestTime($componentData);
+        $component = TelegramMessenger::components()->buildCalendar($componentData);
 
         Telegram::editMessageText([
             'chat_id' => $query->message->chat->id,
             'message_id' => $query->message->messageId,
-            'text' => 'Выберите время приема',
+            'text' => 'Выберите дату для записи на услугу',
             'reply_markup' => json_encode($component),
         ]);
     }

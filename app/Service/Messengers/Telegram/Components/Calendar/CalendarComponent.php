@@ -110,9 +110,9 @@ class CalendarComponent implements ComponentInterface
             }
 
             $callbackData = [
-                'year' => $date->year,
-                'month' => $date->month,
-                'day' => $day,
+                $date->year,
+                $date->month,
+                $day,
             ];
 
             $row[] = [

@@ -14,6 +14,7 @@ return [
     'callback' => [
         'calendar_request_day' => CallbackQuery\Calendar\Request\SelectedDayCallback::class,
         'calendar_request_time' => CallbackQuery\Calendar\Request\SelectedTimeCallback::class,
+        'calendar_request' => CallbackQuery\Calendar\Request\CalendarRequestCallback::class,
     ],
     'error_message' => '⚠️ Произошла техническая ошибка. Мы уже работаем над её устранением.',
 
