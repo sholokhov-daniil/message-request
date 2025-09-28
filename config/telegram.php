@@ -1,12 +1,14 @@
 <?php
 
+use App\Service\Messengers\Telegram\Components;
 use App\Service\Messengers\Telegram\Commands\CallbackQueryCommand;
 use Telegram\Bot\Commands\HelpCommand;
 
 return [
     'cidr' => 'https://core.telegram.org/resources/cidr.txt',
     'components' => [
-        'calendar' => \App\Service\Messengers\Telegram\Components\CalendarComponent::class,
+        'calendar' => Components\CalendarComponent::class,
+        'menu' => Components\MenuComponent::class,
     ],
     'error_message' => '⚠️ Произошла техническая ошибка. Мы уже работаем над её устранением.',
 

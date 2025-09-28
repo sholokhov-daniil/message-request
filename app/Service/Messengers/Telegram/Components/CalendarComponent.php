@@ -5,6 +5,8 @@ namespace App\Service\Messengers\Telegram\Components;
 use App\Components\ComponentInterface;
 use Carbon\Carbon;
 
+use Telegram\Bot\Keyboard\Keyboard;
+
 class CalendarComponent implements ComponentInterface
 {
     /**
@@ -20,83 +22,139 @@ class CalendarComponent implements ComponentInterface
             return [];
         }
 
-        $daysInMonth  = $date->daysInMonth;
-        $startIso     = $date->dayOfWeekIso;
-        $year = $date->year;
-        $month = $date->month;
+        $keyboard = Keyboard::make()->inline();
+        $this->createHeader($keyboard, $date);
+        $this->createBody($keyboard, $date);
 
-//        $keyboard = [[
-//            ['text' => '<', 'callback_data' => "prev:{$year}:{$month}"],
-//            ['text' => $date->translatedFormat('F Y'), 'callback_data' => 'ignore'],
-//            ['text' => '>', 'callback_data' => serialize([
-//                'controller' => 'calendar',
-//                'actions' => 'next',
-//                'parameters' => [
-//                    'year' => 2025,
-//                    'month' => 9
-//                ]
-//            ])],
-//        ]];
-//
-//        // Заголовок дней недели
-//        $weekDaysRow = [];
-//        foreach (['Пн','Вт','Ср','Чт','Пт','Сб','Вс'] as $wd) {
-//            $weekDaysRow[] = ['text' => $wd, 'callback_data' => 'ignore'];
-//        }
-//        $keyboard[] = $weekDaysRow;
-//
-//
-//        // Формируем дни месяца
-//        $row = [];
-//        // Заполняем пустые ячейки до первого дня
-//        for ($i = 1; $i < $startIso; $i++) {
-//            $row[] = ['text' => ' ', 'callback_data' => 'ignore'];
-//        }
-//        for ($day = 1; $day <= $daysInMonth; $day++) {
-//            $text = $day === $selected
-//                ? "🌞 {$day}"
-//                : (string)$day;
-//            $row[] = [
-//                'text'          => $text,
-//                'callback_data' => "pick:{$year}:{$month}:{$day}",
-//            ];
-//            if (count($row) === 7) {
-//                $keyboard[] = $row;
-//                $row = [];
-//            }
-//        }
-//        // Заполняем пустые в конце месяца
-//        if ($row) {
-//            while (count($row) < 7) {
-//                $row[] = ['text' => ' ', 'callback_data' => 'ignore'];
-//            }
-//            $keyboard[] = $row;
-//        }
-//
-//        return ['inline_keyboard' => $keyboard];
-//
+        return $keyboard->toArray();
+    }
 
+    /**
+     * Генерация шапки календаря
+     *
+     * @param Keyboard $keyboard
+     * @param Carbon $date
+     * @return void
+     */
+    private function createHeader(Keyboard $keyboard, Carbon $date): void
+    {
+        $prevDate = $date->copy();
+        $prevDate->ceilMonth();
 
-        $keyboard = ['inline_keyboard' => []];
+        if ($prevDate->timestamp> now()->timestamp) {
+            $prev = Keyboard::inlineButton(
+                [
+                    'text' => '◀️',
+                    'callback_data' => json_encode([
+                        'action' => 'calendar_nav',
+                        'type' => 'prev',
+                        'year' => $prevDate->year,
+                        'month' => $prevDate->month,
+                    ])
+                ]
+            );
+        } else {
+            $prev = Keyboard::inlineButton(['text' => ' ', 'callback_data' => 'noop']);
+        }
+
+        $nextDate = $date->copy();
+        $nextDate->addMonth();
+        $next = Keyboard::inlineButton(
+            [
+                'text' => '▶️',
+                'callback_data' => json_encode([
+                    'action' => 'calendar_nav',
+                    'type' => 'next',
+                    'year' => $nextDate->year,
+                    'month' => $nextDate->month,
+                ])
+            ]
+        );
+
+        $month = Keyboard::inlineButton([
+            'text' => $date->monthName . ' ' . $date->year,
+            'callback_data' => 'noop'
+        ]);
+
+        $keyboard->row([$prev, $month, $next]);
+
+        $daysHeader = [];
+        $dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+        foreach ($dayNames as $dayName) {
+            $daysHeader[] = Keyboard::inlineButton([
+                'text' => $dayName,
+                'callback_data' => 'noop'
+            ]);
+        }
+        $keyboard->row($daysHeader);
+    }
+
+    private function createBody(Keyboard $keyboard, Carbon $date): void
+    {
         $row = [];
+        $daysInMonth = $date->daysInMonth;
+        $startIso = $date->dayOfWeekIso;
 
-        $daysInMonth = $data['now']->daysInMonth;
+        // Заполняем пустые ячейки до первого дня
+        for ($i = 1; $i < $startIso; $i++) {
+            $row[] = ['text' => ' ', 'callback_data' => 'ignore'];
+        }
 
         for ($day = 1; $day <= $daysInMonth; $day++) {
-            $dayText = (string)($day === 3 ? '✖' . $day : $day);
+            // Добавить проверку, что дата не доступна
+            $text = $day;
+
+            // Если занято
+            if (in_array($day, [12, 18, 21])) {
+                $text = " ";
+            }
 
             $row[] = [
-                'text' => $dayText,
-                'callback_data' => 'date_' . $day
+                'text' => $text,
+                'callback_data' => "pick:{$date->year}:{$date->month}:{$day}"
             ];
 
-            // Каждые 7 дней создаем новый ряд (неделя)
-            if ($day % 7 === 0 || $day === $daysInMonth) {
-                $keyboard['inline_keyboard'][] = $row;
+            if (count($row) === 7) {
+                $keyboard->row($row);
                 $row = [];
             }
         }
 
-        return $keyboard;
+
+        // Calendar days
+
+
+//        foreach ($date->weeks as $week) {
+//            $weekButtons = [];
+//            foreach ($week as $day) {
+//                $text = $day['day'];
+//                $callbackData = 'noop';
+//
+//                if ($day['is_current_month']) {
+//                    if ($day['is_past']) {
+//                        $text = '❌';
+//                    } elseif ($day['is_today']) {
+//                        $text = $day['is_available'] ? "🟢{$day['day']}" : "❌{$day['day']}";
+//                    } elseif ($day['is_available']) {
+//                        $callbackData = json_encode([
+//                            'action' => 'select_date',
+//                            'date' => $day['date']->format('Y-m-d'),
+//                            'year' => $calendarData['year'],
+//                            'month' => $calendarData['month'],
+//                        ]);
+//                    } else {
+//                        $text = "❌{$day['day']}";
+//                    }
+//                } else {
+//                    $text = '⬜'; // Empty for other month days
+//                }
+//
+//                $weekButtons[] = Keyboard::inlineButton([
+//                    'text' => $text,
+//                    'callback_data' => $callbackData
+//                ]);
+//            }
+//            $keyboard->row(...$weekButtons);
+//        }
     }
 }

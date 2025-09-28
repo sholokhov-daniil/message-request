@@ -13,7 +13,7 @@ class BookRequestCommand extends Command
 
     public function handle(): void
     {
-        $component = TelegramMessenger::components()->getCalendar();
+        $component = TelegramMessenger::components()->buildCalendar();
         $data = ['now' => Carbon::now()];
 
         $this->replyWithMessage([

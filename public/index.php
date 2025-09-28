@@ -3,6 +3,13 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
+
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+
 define('LARAVEL_START', microtime(true));
 
 // Determine if the application is in maintenance mode...

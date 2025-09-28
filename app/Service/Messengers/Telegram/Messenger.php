@@ -2,11 +2,10 @@
 
 namespace App\Service\Messengers\Telegram;
 
-use App\Facade\ComponentFacade;
 use App\Components\ComponentInterface;
 use App\Service\Messengers\MessengerInterface;
 
-use App\Service\Messengers\Telegram\Registry\ComponentRegistry;
+use App\Service\Messengers\Telegram\Components\ComponentManager;
 use Illuminate\Support\Facades\Log;
 use Psr\Log\LoggerInterface;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -91,12 +90,12 @@ class Messenger implements MessengerInterface
 
     public function getComponent(string $name): ?ComponentInterface
     {
-        return ComponentFacade::getComponent($this->getId(), $name);
+        return $this->components()->build($name);
     }
 
-    public function components(): ComponentRegistry
+    public function components(): ComponentManager
     {
-        return app('TelegramComponent');
+        return app('MessengerTelegramComponent');
     }
 
     public function getLogger(): LoggerInterface

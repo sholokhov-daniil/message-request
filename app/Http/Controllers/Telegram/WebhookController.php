@@ -15,30 +15,6 @@ class WebhookController extends Controller
 {
     public function __invoke(Request $request)
     {
-
-        $data = [
-            'controller' => 'calendar',
-            'actions' => 'next',
-            'parameters' => [
-                'year' => 2025,
-                'month' => 9
-            ]
-        ];
-        // pick:year=2025:moth=9:day=15
-//        $update = Telegram::getWebhookUpdate();
-
-//        if ($update->objectType() === 'callback_query') {
-//            Telegram::answerCallbackQuery();
-//        }
-//
-//        if ($update->callbackQuery) {
-//            Telegram::answerCallbackQuery();
-//        }
-//
-//        TelegramMessenger::getLogger()->debug(
-//            $update->callbackQuery
-//        );
-
         try {
             return Telegram::commandsHandler(true);
         } catch (Throwable $throwable) {
