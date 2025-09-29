@@ -40,7 +40,6 @@ abstract class AbstractQuery implements ContainerInterface, Stringable
         return $this->collection->get($id);
     }
 
-
     public function has(string $id): bool
     {
         return $this->collection->has($id);

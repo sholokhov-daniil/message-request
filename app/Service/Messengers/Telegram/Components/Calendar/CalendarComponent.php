@@ -3,7 +3,7 @@
 namespace App\Service\Messengers\Telegram\Components\Calendar;
 
 use App\Components\ComponentInterface;
-use App\Service\Messengers\Telegram\DTO\Callback;
+use App\Service\Messengers\Telegram\CallbackQuery\DTO\DateCallback;
 use App\Service\Messengers\Telegram\Facade\TelegramMessenger;
 use Carbon\Carbon;
 use Telegram\Bot\Keyboard\Keyboard;
@@ -17,7 +17,6 @@ class CalendarComponent implements ComponentInterface
     public function build(mixed $data): array
     {
         $date = $data['now'];
-        $selected = $data['selected'] ?? 0;
 
         if (!($date instanceof Carbon)) {
             return [];
@@ -51,11 +50,11 @@ class CalendarComponent implements ComponentInterface
             $prev = Keyboard::inlineButton(
                 [
                     'text' => '◀️',
-                    'callback_data' => Callback::create('calendar_request', [$prevDate->year, $prevDate->month])
+                    'callback_data' => DateCallback::encodeFromDate('calendar_request', $prevDate)
                 ]
             );
         } else {
-            $prev = Keyboard::inlineButton(['text' => ' ', 'callback_data' => 'noop']);
+            $prev = Keyboard::inlineButton(['text' => ' ', 'callback_data' => '']);
         }
 
         $nextDate = $date->copy();
@@ -63,7 +62,7 @@ class CalendarComponent implements ComponentInterface
         $next = Keyboard::inlineButton(
             [
                 'text' => '▶️',
-                'callback_data' => Callback::create('calendar_request', [$nextDate->year, $nextDate->month])
+                'callback_data' => DateCallback::encodeFromDate('calendar_request', $nextDate)
             ]
         );
 
@@ -71,12 +70,12 @@ class CalendarComponent implements ComponentInterface
 
         $month = Keyboard::inlineButton([
             'text' => $date->isoFormat('MMMM'),
-            'callback_data' => Callback::create('calendar_request_month', [$date->year, $date->month])
+            'callback_data' => DateCallback::encodeFromDate('calendar_request_month', $date)
         ]);
 
         $year = Keyboard::inlineButton([
             'text' => $date->year,
-            'callback_data' => Callback::create('calendar_request_year', [$date->year, $date->month])
+            'callback_data' => DateCallback::encodeFromDate('calendar_request_year', $date),
         ]);
 
         $keyboard->row([$month, $year]);
@@ -100,7 +99,7 @@ class CalendarComponent implements ComponentInterface
 
         // Заполняем пустые ячейки до первого дня
         for ($i = 1; $i < $startIso; $i++) {
-            $row[] = ['text' => ' ', 'callback_data' => 'ignore'];
+            $row[] = ['text' => ' ', 'callback_data' => ''];
         }
 
         for ($day = 1; $day <= $daysInMonth; $day++) {
@@ -112,16 +111,12 @@ class CalendarComponent implements ComponentInterface
                 $text = " ";
             }
 
-            $callbackData = [
-                $date->year,
-                $date->month,
-                $day,
-            ];
+            $nowDate = $date->copy();
+            $nowDate->setDay($day);
 
             $row[] = [
                 'text' => $text,
-                'callback_data' => (string)(new Callback('calendar_request_day', $callbackData))
-//                'callback_data' => (string)(new Callback('calendar_request_day', $callbackData))
+                'callback_data' => DateCallback::encodeFromDate('calendar_request_day', $nowDate)
             ];
 
             if (count($row) === 7) {
@@ -129,42 +124,5 @@ class CalendarComponent implements ComponentInterface
                 $row = [];
             }
         }
-
-
-        // Calendar days
-
-
-//        foreach ($date->weeks as $week) {
-//            $weekButtons = [];
-//            foreach ($week as $day) {
-//                $text = $day['day'];
-//                $callbackData = 'noop';
-//
-//                if ($day['is_current_month']) {
-//                    if ($day['is_past']) {
-//                        $text = '❌';
-//                    } elseif ($day['is_today']) {
-//                        $text = $day['is_available'] ? "🟢{$day['day']}" : "❌{$day['day']}";
-//                    } elseif ($day['is_available']) {
-//                        $callbackData = json_encode([
-//                            'action' => 'select_date',
-//                            'date' => $day['date']->format('Y-m-d'),
-//                            'year' => $calendarData['year'],
-//                            'month' => $calendarData['month'],
-//                        ]);
-//                    } else {
-//                        $text = "❌{$day['day']}";
-//                    }
-//                } else {
-//                    $text = '⬜'; // Empty for other month days
-//                }
-//
-//                $weekButtons[] = Keyboard::inlineButton([
-//                    'text' => $text,
-//                    'callback_data' => $callbackData
-//                ]);
-//            }
-//            $keyboard->row(...$weekButtons);
-//        }
     }
 }
