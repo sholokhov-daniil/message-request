@@ -4,9 +4,10 @@ namespace App\Service\Messengers\Telegram\Components\Calendar;
 
 use App\Components\ComponentInterface;
 use App\Service\Messengers\Telegram\DTO\Callback;
+use Carbon\Carbon;
 use Telegram\Bot\Keyboard\Keyboard;
 
-class RequestTime implements ComponentInterface
+class MonthSelectComponent implements ComponentInterface
 {
     /**
      * @param array $data
@@ -26,21 +27,23 @@ class RequestTime implements ComponentInterface
     {
         $row = [];
         $times = (array)($data['items'] ?? []);
-        $action = (string)($data['action'] ?? 'calendar_request_time');
+        $action = (string)($data['action'] ?? 'calendar_request');
+        $lineSize = intval($data['size'] ?? 2);
 
-        foreach ($times as $value) {
+        /** @var Carbon $item */
+        foreach ($times as $item) {
             $row[] = $keyboard::inlineButton([
-                'text' => $value,
+                'text' => $item->isoFormat('MMMM'),
                 'callback_data' => Callback::create(
                     $action,
                     [
-                        ...$data['date'],
-                        $value
+                        $data['date'][0],
+                        $item->month
                     ]
                 ),
             ]);
 
-            if (count($row) === 3) {
+            if (count($row) === $lineSize) {
                 $keyboard->row($row);
                 $row = [];
             }

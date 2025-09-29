@@ -8,6 +8,7 @@ return [
     'cidr' => 'https://core.telegram.org/resources/cidr.txt',
     'components' => [
         'calendar' => Components\Calendar\CalendarComponent::class,
+        'calendar_month_select' => Components\Calendar\MonthSelectComponent::class,
         'menu' => Components\MenuComponent::class,
         'request_time' => Components\Calendar\RequestTime::class,
     ],
@@ -16,6 +17,7 @@ return [
         'calendar_request_day' => CallbackQuery\Calendar\Request\SelectTimeCallback::class,
         'calendar_request_time' => CallbackQuery\Calendar\Request\AcceptedTimeCallback::class,
         'calendar_request_accepted' => CallbackQuery\Calendar\Request\AcceptRequestCallback::class,
+        'calendar_request_month' => CallbackQuery\Calendar\Request\MonthSelectCallback::class,
     ],
     'error_message' => '⚠️ Произошла техническая ошибка. Мы уже работаем над её устранением.',
 

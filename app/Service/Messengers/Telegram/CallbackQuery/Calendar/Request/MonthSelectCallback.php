@@ -2,38 +2,37 @@
 
 namespace App\Service\Messengers\Telegram\CallbackQuery\Calendar\Request;
 
+use App\Service\Messengers\Telegram\DTO\Callback;
 use App\Service\Messengers\Telegram\Facade\TelegramMessenger;
 use Carbon\Carbon;
+use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\CallbackQuery;
 
-class SelectTimeCallback
+class MonthSelectCallback
 {
     public function __invoke(CallbackQuery $query, array $data = []): void
     {
         // TODO: Добавить логику поиска свободного время
-        $componentData = [
-            'date' => $data,
-            'items' => [
-                "13:00",
-                "14:00",
-                "15:00",
-                "18:00",
-                "22:00",
-                "3:00",
-            ]
+        $freeMonths = [
+            Carbon::create(2025, 1)->locale('ru'),
+            Carbon::create(2025, 4)->locale('ru'),
+            Carbon::create(2025, 5)->locale('ru'),
+            Carbon::create(2025, 9)->locale('ru'),
+            Carbon::create(2025, 11)->locale('ru'),
         ];
 
+        $componentData = [
+            'date' => $data,
+            'items' => $freeMonths
+        ];
 
-        $component = TelegramMessenger::components()->buildRequestTime($componentData);
-
-        list($year, $month, $day) = $data;
-        $date = Carbon::createFromDate($year, $month, $day)->locale('ru');
+        $component = TelegramMessenger::components()->buildCalendarMonth($componentData);
 
         Telegram::editMessageText([
             'chat_id' => $query->message->chat->id,
             'message_id' => $query->message->messageId,
-            'text' => '🕝 Выберите время приема на ' . $date->isoFormat('D MMMM YYYY'),
+            'text' => '📅 Выберите желаемый месяц',
             'reply_markup' => json_encode($component),
         ]);
     }
