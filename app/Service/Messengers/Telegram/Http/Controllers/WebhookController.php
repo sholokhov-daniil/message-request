@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Telegram;
+namespace App\Service\Messengers\Telegram\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-
-use App\Service\Messengers\Telegram\Facade\TelegramMessenger;
 use App\Service\Messengers\Telegram\Facade\CallbackRoute;
+use App\Service\Messengers\Telegram\Facade\TelegramMessenger;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
-use Telegram\Bot\Objects\Update;
 use Throwable;
 
 class WebhookController extends Controller

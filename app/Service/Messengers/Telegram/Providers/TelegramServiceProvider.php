@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Providers;
+namespace App\Service\Messengers\Telegram\Providers;
 
 use App\Service\Messengers\Telegram\Commands\BookRequestCommand;
-use App\Service\Messengers\Telegram\Commands\CallbackQueryCommand;
 use App\Service\Messengers\Telegram\Commands\HelpCommand;
 use App\Service\Messengers\Telegram\Commands\StartCommand;
 use App\Service\Messengers\Telegram\Components\ComponentManager;
@@ -20,7 +19,6 @@ class TelegramServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Telegram::addCommands([
-            CallbackQueryCommand::class,
             HelpCommand::class,
             BookRequestCommand::class,
             StartCommand::class

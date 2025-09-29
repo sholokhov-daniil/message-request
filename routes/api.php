@@ -1,9 +1,8 @@
 <?php
 
+use App\Service\Messengers\Telegram\Http\Controllers\WebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Telegram\WebhookController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
