@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('service_id')->isNotEmpty();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('bot_id')->isNotEmpty();
             $table->string('token')->isNotEmpty();
             $table->boolean('verified')->default(0);
             $table->timestamps();

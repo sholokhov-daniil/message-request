@@ -16,15 +16,25 @@ class Integration extends Model
 
     protected $table = 'integrations';
 
+    protected $keyType = 'string';
+
     protected $fillable = [
         'id',
         'service_id',
         'user_id',
+        'bot_id',
         'token',
         'verified'
     ];
 
-    protected $keyType = 'string';
+    protected $casts = [
+        'id' => 'string',
+        'service_id' => 'string',
+        'user_id' => 'integer',
+        'bot_id' => 'string',
+        'token' => 'string',
+        'verified' => 'boolean',
+    ];
 
     public function service(): BelongsTo
     {
