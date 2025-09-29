@@ -76,7 +76,7 @@ class CalendarComponent implements ComponentInterface
 
         $year = Keyboard::inlineButton([
             'text' => $date->year,
-            'callback_data' => 'noop'
+            'callback_data' => Callback::create('calendar_request_year', [$date->year, $date->month])
         ]);
 
         $keyboard->row([$month, $year]);

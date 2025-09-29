@@ -9,6 +9,7 @@ return [
     'components' => [
         'calendar' => Components\Calendar\CalendarComponent::class,
         'calendar_month_select' => Components\Calendar\MonthSelectComponent::class,
+        'calendar_year_select' => Components\Calendar\YearSelectComponent::class,
         'menu' => Components\MenuComponent::class,
         'request_time' => Components\Calendar\RequestTime::class,
     ],
@@ -18,6 +19,7 @@ return [
         'calendar_request_time' => CallbackQuery\Calendar\Request\AcceptedTimeCallback::class,
         'calendar_request_accepted' => CallbackQuery\Calendar\Request\AcceptRequestCallback::class,
         'calendar_request_month' => CallbackQuery\Calendar\Request\MonthSelectCallback::class,
+        'calendar_request_year' => CallbackQuery\Calendar\Request\YearSelectCallback::class,
     ],
     'error_message' => '⚠️ Произошла техническая ошибка. Мы уже работаем над её устранением.',
 

@@ -47,6 +47,11 @@ readonly class ComponentManager implements ContainerInterface
         return $this->build('calendar_month_select', $data);
     }
 
+    public function buildCalendarYear(array $data): array
+    {
+        return $this->build('calendar_year_select', $data);
+    }
+
     public function buildMenu(): array
     {
         return $this->build('menu');
