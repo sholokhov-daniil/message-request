@@ -2,7 +2,7 @@
 
 namespace App\Service\Messengers;
 
-use App\Components\ComponentInterface;
+use App\Core\UI\Components\ComponentInterface;
 
 interface MessengerInterface
 {

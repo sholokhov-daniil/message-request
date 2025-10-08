@@ -2,5 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    \App\Service\Messengers\Telegram\Providers\TelegramServiceProvider::class,
+    \App\Containers\Bot\Telegram\Providers\TelegramServiceProvider::class,
 ];

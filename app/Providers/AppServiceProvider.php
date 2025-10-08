@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Components\ComponentManager;
+use App\Core\UI\Components\ComponentManager;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

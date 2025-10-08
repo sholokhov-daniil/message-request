@@ -2,7 +2,7 @@
 
 namespace App\Facade;
 
-use App\Components\ComponentInterface;
+use App\Core\UI\Components\ComponentInterface;
 use Illuminate\Support\Facades\Facade;
 
 /**

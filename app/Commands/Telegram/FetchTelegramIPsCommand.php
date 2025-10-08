@@ -2,8 +2,7 @@
 
 namespace App\Commands\Telegram;
 
-use App\Models\Webhook\WhiteIpWebhook;
-
+use App\Core\Models\Webhook\WhiteIpWebhook;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 

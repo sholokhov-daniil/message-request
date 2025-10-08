@@ -1,5 +1,7 @@
 <?php
 
+use App\Containers\Bot\Telegram\Action\Api\Command\BookRequestAction;
+use App\Containers\Bot\Telegram\Action\Api\Command\StartAction;
 use App\Service\Messengers\Telegram\CallbackQuery;
 use App\Service\Messengers\Telegram\Components;
 use Telegram\Bot\Commands\HelpCommand;
@@ -7,19 +9,19 @@ use Telegram\Bot\Commands\HelpCommand;
 return [
     'cidr' => 'https://core.telegram.org/resources/cidr.txt',
     'components' => [
-        'calendar' => Components\Calendar\CalendarComponent::class,
-        'calendar_month_select' => Components\Calendar\MonthSelectComponent::class,
-        'calendar_year_select' => Components\Calendar\YearSelectComponent::class,
-        'menu' => Components\MenuComponent::class,
-        'request_time' => Components\Calendar\RequestTime::class,
+        'calendar' => \App\Containers\Bot\Telegram\UI\API\Components\Calendar\CalendarComponent::class,
+        'calendar_month_select' => \App\Containers\Bot\Telegram\UI\API\Components\Calendar\MonthSelectComponent::class,
+        'calendar_year_select' => \App\Containers\Bot\Telegram\UI\API\Components\Calendar\YearSelectComponent::class,
+        'menu' => \App\Containers\Bot\Telegram\UI\API\Components\MenuComponent::class,
+        'request_time' => \App\Containers\Bot\Telegram\UI\API\Components\Calendar\RequestTime::class,
     ],
     'callback' => [
-        'calendar_request' => CallbackQuery\Calendar\Request\CalendarRequestCallback::class,
-        'calendar_request_day' => CallbackQuery\Calendar\Request\SelectTimeCallback::class,
-        'calendar_request_time' => CallbackQuery\Calendar\Request\AcceptedTimeCallback::class,
-        'calendar_request_accepted' => CallbackQuery\Calendar\Request\AcceptRequestCallback::class,
-        'calendar_request_month' => CallbackQuery\Calendar\Request\MonthSelectCallback::class,
-        'calendar_request_year' => CallbackQuery\Calendar\Request\YearSelectCallback::class,
+        'calendar_request' => \App\Containers\Bot\Telegram\Action\Api\Callback\Calendar\Request\CalendarRequestCallback::class,
+        'calendar_request_day' => \App\Containers\Bot\Telegram\Action\Api\Callback\Calendar\Request\SelectTimeCallback::class,
+        'calendar_request_time' => \App\Containers\Bot\Telegram\Action\Api\Callback\Calendar\Request\AcceptedTimeCallback::class,
+        'calendar_request_accepted' => \App\Containers\Bot\Telegram\Action\Api\Callback\Calendar\Request\AcceptRequestCallback::class,
+        'calendar_request_month' => \App\Containers\Bot\Telegram\Action\Api\Callback\Calendar\Request\MonthSelectCallback::class,
+        'calendar_request_year' => \App\Containers\Bot\Telegram\Action\Api\Callback\Calendar\Request\YearSelectCallback::class,
     ],
     'error_message' => '⚠️ Произошла техническая ошибка. Мы уже работаем над её устранением.',
 
@@ -151,6 +153,8 @@ return [
     */
     'commands' => [
         HelpCommand::class,
+        BookRequestAction::class,
+        StartAction::class
     ],
 
     /*

@@ -1,5 +1,6 @@
 <?php
 
+use App\Containers\Bot\Telegram\UI\WEB\Controllers\WebAppController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -36,6 +37,7 @@ Route::get('/telegram-commands', function() {
     return response()->json(['success' => $res]);
 });
 
+Route::get('/telegram/web', WebAppController::class);
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
-require __DIR__ . '/integration.php';
